@@ -1,6 +1,10 @@
 import express from "express";
-import {routerLivros} from "./routes/routes.livro.js";
+import {routerFilmes} from "./routes/routes.filme.js";
+import {errosController} from "./controllers/erros/controllers.erros.js";
+import {ErroNotFound} from "./classes/erros/class.NotFound.js";
 
 export const app = express();
-app.use(routerLivros);
-
+app.use(express.json({limit: "100kb"}));
+app.use(routerFilmes);
+app.use((req, res, next) => next(new ErroNotFound("Rota não encontrada!")));
+app.use(errosController);

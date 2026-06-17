@@ -1,6 +1,15 @@
 import {app} from "./src/app.js";
-const PORT = 8000
+import {conectaBD} from "./src/conexaoBD/func.conectaBD.js";
 
-app.listen(PORT, () => {
-    console.log("server on");
-});
+const PORT = process.env.PORT || 8000;
+
+try {
+    await conectaBD();
+
+    app.listen(PORT, () => {
+        console.log(`Servidor on`);
+    });
+} catch (erro) {
+    console.error("Não foi possível iniciar o servidor:", erro.message);
+    process.exitCode = 1;
+}
